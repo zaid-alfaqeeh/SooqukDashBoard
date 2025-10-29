@@ -23,7 +23,7 @@ import { ReviewActionButtons } from "./ReviewActionButtons";
  * Admin-only component for managing product reviews
  */
 export function ProductReviewsTable() {
-  const t = useTranslations();
+  const t = useTranslations("reviews");
   const [statusFilter, setStatusFilter] = useState<
     "all" | "pending" | "approved" | "rejected"
   >("pending");
@@ -36,7 +36,6 @@ export function ProductReviewsTable() {
     pageSize,
     status: getReviewStatusValue(statusFilter),
   });
-
   // Mutations
   const updateStatusMutation = useUpdateProductReviewStatus();
   const deleteMutation = useDeleteProductReview();
@@ -62,7 +61,7 @@ export function ProductReviewsTable() {
   if (error) {
     return (
       <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-        <p className="text-red-800">Error loading reviews. Please try again.</p>
+        <p className="text-red-800">{t("error")}</p>
       </div>
     );
   }
@@ -73,11 +72,15 @@ export function ProductReviewsTable() {
     <div className="space-y-4">
       {/* Header and Filters */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h2 className="text-2xl font-bold text-gray-900">Product Reviews</h2>
+        <h2 className="text-2xl font-bold text-gray-900">
+          {t("productReviews")}
+        </h2>
 
         {/* Status Filter */}
         <div className="flex items-center gap-2">
-          <label className="text-sm font-medium text-black">Filter:</label>
+          <label className="text-sm font-medium text-black">
+            {t("filter")}:
+          </label>
           <select
             value={statusFilter}
             onChange={(e) => {
@@ -89,16 +92,16 @@ export function ProductReviewsTable() {
             className="px-3 py-2 border border-gray-300 rounded-md text-sm text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="all" className="text-black">
-              All Reviews
+              {t("allReviews")}
             </option>
             <option value="pending" className="text-black">
-              Pending
+              {t("statusPending")}
             </option>
             <option value="approved" className="text-black">
-              Approved
+              {t("statusApproved")}
             </option>
             <option value="rejected" className="text-black">
-              Rejected
+              {t("statusRejected")}
             </option>
           </select>
         </div>
@@ -107,7 +110,8 @@ export function ProductReviewsTable() {
       {/* Stats */}
       {data && (
         <div className="text-sm text-gray-600">
-          Showing {data.items.length} of {data.totalCount} reviews
+          {t("showing")} {data.items.length} {t("of")} {data.totalCount}{" "}
+          {t("productReviews")}
         </div>
       )}
 
@@ -118,28 +122,28 @@ export function ProductReviewsTable() {
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  ID
+                  {t("id")}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Product
+                  {t("product")}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  User
+                  {t("user")}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Rating
+                  {t("rating")}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Comment
+                  {t("comment")}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status
+                  {t("status")}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Date
+                  {t("date")}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
+                  {t("actions")}
                 </th>
               </tr>
             </thead>
@@ -149,9 +153,7 @@ export function ProductReviewsTable() {
                   <td colSpan={8} className="px-6 py-12 text-center">
                     <div className="flex justify-center items-center">
                       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-                      <span className="ml-3 text-gray-600">
-                        Loading reviews...
-                      </span>
+                      <span className="ml-3 text-gray-600">{t("loading")}</span>
                     </div>
                   </td>
                 </tr>
@@ -161,7 +163,7 @@ export function ProductReviewsTable() {
                     colSpan={8}
                     className="px-6 py-12 text-center text-gray-500"
                   >
-                    No reviews found
+                    {t("noReviews")}
                   </td>
                 </tr>
               ) : (
@@ -191,9 +193,16 @@ export function ProductReviewsTable() {
                         {renderStars(review.rating)}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-600">
+                    <td className="px-6 py-4 text-sm text-black">
                       <div className="max-w-md">
-                        {truncateText(review.comment, 80)}
+                        <p>{truncateText(review.comment, 80)}</p>
+                        {review.imageUrl && (
+                          <img
+                            src={review.imageUrl}
+                            alt="Review"
+                            className="mt-2 w-24 h-24 object-cover rounded-lg border border-gray-200"
+                          />
+                        )}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -234,20 +243,22 @@ export function ProductReviewsTable() {
                 disabled={!data.hasPreviousPage}
                 className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
               >
-                Previous
+                {t("previous")}
               </button>
               <button
                 onClick={() => setPageNumber((p) => p + 1)}
                 disabled={!data.hasNextPage}
                 className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
               >
-                Next
+                {t("next")}
               </button>
             </div>
             <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
               <div>
                 <p className="text-sm text-gray-700">
-                  Page <span className="font-medium">{data.pageNumber}</span> of{" "}
+                  {t("page")}{" "}
+                  <span className="font-medium">{data.pageNumber}</span>{" "}
+                  {t("of")}{" "}
                   <span className="font-medium">{data.totalPages}</span>
                 </p>
               </div>
@@ -258,14 +269,14 @@ export function ProductReviewsTable() {
                     disabled={!data.hasPreviousPage}
                     className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
                   >
-                    Previous
+                    {t("previous")}
                   </button>
                   <button
                     onClick={() => setPageNumber((p) => p + 1)}
                     disabled={!data.hasNextPage}
                     className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
                   >
-                    Next
+                    {t("next")}
                   </button>
                 </nav>
               </div>

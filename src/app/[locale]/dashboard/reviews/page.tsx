@@ -23,10 +23,10 @@ export default function ReviewsPage() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-4xl font-extrabold text-black mb-3">
-            Reviews Management
+            {t("title")}
           </h1>
           <p className="text-lg text-black font-medium">
-            Manage product and vendor reviews - Approve, Reject, or Delete
+            {t("manageDescription")}
           </p>
         </div>
 
@@ -55,7 +55,7 @@ export default function ReviewsPage() {
                     d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
                   />
                 </svg>
-                Product Reviews
+                {t("productReviews")}
               </button>
               <button
                 onClick={() => setActiveTab("vendors")}
@@ -78,7 +78,7 @@ export default function ReviewsPage() {
                     d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
                   />
                 </svg>
-                Vendor Reviews
+                {t("vendorReviews")}
               </button>
               <button
                 onClick={() => setActiveTab("orders")}
@@ -101,7 +101,7 @@ export default function ReviewsPage() {
                     d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
                   />
                 </svg>
-                Order Reviews (View Only)
+                {t("orderReviewsViewOnly")}
               </button>
             </nav>
           </div>
