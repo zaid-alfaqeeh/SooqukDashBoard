@@ -176,3 +176,48 @@ export interface UpdatePaymentStatusRequest {
   paymentStatus: PaymentStatus;
   notes?: string;
 }
+
+// Vendor Order Types (simplified from vendor API)
+export interface VendorOrderItem {
+  productId: number;
+  productName: string;
+  quantity: number;
+  price: number;
+}
+
+export interface VendorOrderListItem {
+  orderId: number;
+  orderNumber: string;
+  orderDate: string;
+  status: OrderStatus;
+  statusText: string;
+  totalAmount: number;
+  customerId: string;
+  createdAt: string;
+  itemsCount: number;
+  items: VendorOrderItem[];
+  customerName: string;
+  customerPhone: string;
+  shippingAddress: string;
+  itemCount: number;
+}
+
+export interface GetVendorOrdersParams {
+  pageNumber?: number;
+  pageSize?: number;
+  status?: OrderStatus;
+}
+
+export interface GetVendorOrdersResponse {
+  items: VendorOrderListItem[];
+  totalCount: number;
+  pageNumber: number;
+  pageSize: number;
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+}
+
+export interface UpdateVendorOrderStatusRequest {
+  Status: OrderStatus;
+}

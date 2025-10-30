@@ -29,7 +29,7 @@ export default function OrdersPage() {
   const toast = useToast();
   const router = useRouter();
   const locale = useLocale();
-  useAuthGuard(["Admin", "vendor"]);
+  useAuthGuard(["Admin"]);
 
   // Filters and pagination
   const [page, setPage] = useState(1);

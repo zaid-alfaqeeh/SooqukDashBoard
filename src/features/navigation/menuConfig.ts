@@ -65,7 +65,7 @@ export const menuConfig: MenuItem[] = [
     labelKey: "menu.colorsSizes",
     icon: "palette",
     path: "/dashboard/colors-sizes",
-    roles: ["Admin", "vendor"],
+    roles: ["Admin"],
   },
   {
     id: "subscriptions",
@@ -119,18 +119,39 @@ export const menuConfig: MenuItem[] = [
 
   // Vendor Only Sections
   {
+    id: "vendor-statistics",
+    labelKey: "menu.vendorStatistics",
+    icon: "chart",
+    path: "/dashboard/vendor-statistics",
+    roles: ["Vendor", "Admin"], // in production this should be only Vendor
+  },
+  {
+    id: "vendor-reviews",
+    labelKey: "menu.vendorReviews",
+    icon: "star",
+    path: "/dashboard/vendor-reviews",
+    roles: ["Vendor", "Admin"], // in production this should be only Vendor
+  },
+  {
+    id: "product-reviews",
+    labelKey: "menu.productReviews",
+    icon: "star",
+    path: "/dashboard/product-reviews",
+    roles: ["Vendor", "Admin"], // in production this should be only Vendor
+  },
+  {
     id: "products",
     labelKey: "menu.products",
     icon: "package",
     path: "/dashboard/products",
-    roles: ["vendor", "Admin"],
+    roles: ["Vendor", "Admin"],
   },
   {
-    id: "my-orders",
-    labelKey: "menu.myOrders",
+    id: "vendor-orders",
+    labelKey: "menu.vendorOrders",
     icon: "shopping-bag",
-    path: "/dashboard/orders",
-    roles: ["vendor"],
+    path: "/dashboard/vendor-orders",
+    roles: ["Vendor", "Admin"], // in production this should be only Vendor
   },
 
   // Shipping Company Only Sections
@@ -157,7 +178,7 @@ export const menuConfig: MenuItem[] = [
     labelKey: "menu.analytics",
     icon: "chart",
     path: "/dashboard/analytics",
-    roles: ["Admin", "vendor"],
+    roles: ["Admin", "Vendor"],
   },
 
   // Support - Admin only
@@ -175,7 +196,7 @@ export const menuConfig: MenuItem[] = [
     labelKey: "menu.settings",
     icon: "settings",
     path: "/dashboard/settings",
-    roles: ["Admin", "vendor", "ShippingCompany"],
+    roles: ["Admin", "Vendor", "ShippingCompany"],
   },
 ];
 

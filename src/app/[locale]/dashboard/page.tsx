@@ -11,7 +11,7 @@ import DashboardLayout from "@/components/DashboardLayout/DashboardLayout";
 
 export default function DashboardPage() {
   const t = useTranslations();
-  useAuthGuard(["Admin", "vendor", "ShippingCompany"]);
+  useAuthGuard(["Admin", "Vendor", "ShippingCompany"]);
 
   const user = useAppSelector(selectUser);
   const userRole = useAppSelector(selectUserRole);
@@ -162,7 +162,7 @@ export default function DashboardPage() {
                   />
                 </svg>
                 <p className="font-semibold text-sm">
-                  {userRole === "vendor"
+                  {userRole === "Vendor"
                     ? t("dashboard.addProduct")
                     : t("dashboard.addNew")}
                 </p>

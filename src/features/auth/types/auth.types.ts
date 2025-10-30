@@ -1,5 +1,5 @@
 // User role types
-export type UserRole = "Admin" | "vendor" | "ShippingCompany";
+export type UserRole = "Admin" | "Vendor" | "ShippingCompany";
 
 export type UserStatus = 0 | 1; // 0 = inactive, 1 = active
 

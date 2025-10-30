@@ -26,6 +26,8 @@ import { useState } from "react";
 import OrderStatusModal from "@/features/orders/orderComponent/OrderStatusModal";
 import OrderCancelModal from "@/features/orders/orderComponent/OrderCancelModal";
 import PaymentStatusModal from "@/features/orders/orderComponent/PaymentStatusModal";
+import { useAppSelector } from "@/features/hooks/redux";
+import { selectUserRole } from "@/features/auth/authSlice/authSlice";
 
 export default function OrderDetailPage() {
   const t = useTranslations("orders");
@@ -35,13 +37,18 @@ export default function OrderDetailPage() {
   const locale = useLocale();
   const orderId = Number(params.id);
 
-  useAuthGuard(["Admin", "vendor"]);
+  useAuthGuard(["Admin", "Vendor"]);
+
+  // Get user role to determine if payment status can be updated
+  const userRole = useAppSelector(selectUserRole);
+  const isVendor = userRole === "Vendor";
 
   const [showStatusModal, setShowStatusModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   const { data: orderData, isLoading, error } = useOrder(orderId);
+  console.log(orderData);
   const updateStatusMutation = useUpdateOrderStatus();
   const updatePaymentMutation = useUpdatePaymentStatus();
   const cancelMutation = useCancelOrder();
@@ -138,7 +145,7 @@ export default function OrderDetailPage() {
         {/* Header */}
         <div className="mb-8">
           <button
-            onClick={() => router.push(`/${locale}/dashboard/orders`)}
+            onClick={() => router.back()}
             className="flex items-center gap-2 text-gray-600 hover:text-black font-semibold mb-4 transition-colors"
           >
             <svg
@@ -154,7 +161,7 @@ export default function OrderDetailPage() {
                 d="M15 19l-7-7 7-7"
               />
             </svg>
-            {t("backToOrders")}
+            {isVendor ? t("goBack") : t("backToOrders")}
           </button>
           <div className="flex justify-between items-start">
             <div>
@@ -209,7 +216,6 @@ export default function OrderDetailPage() {
                         alt={item.productName}
                         className="w-24 h-24 object-cover rounded-lg"
                       />
-                 
                     </div>
                     <div className="flex-1">
                       <h3 className="font-bold text-black mb-1">
@@ -263,118 +269,124 @@ export default function OrderDetailPage() {
               </div>
             </div>
 
-            {/* Customer Information */}
-            <div className="bg-white rounded-2xl shadow-xl p-6 border border-gray-200">
-              <h2 className="text-2xl font-bold text-black mb-6">
-                {t("details.customerInformation")}
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <p className="text-sm text-gray-600 mb-1">
-                    {t("details.fullName")}
-                  </p>
-                  <p className="font-semibold text-black">
-                    {order.customer.fullName}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600 mb-1">
-                    {t("details.email")}
-                  </p>
-                  <p className="font-semibold text-black">
-                    {order.customer.email}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600 mb-1">
-                    {t("details.phoneNumber")}
-                  </p>
-                  <p className="font-semibold text-black">
-                    {order.customer.phoneNumber}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Shipping Address */}
-            <div className="bg-white rounded-2xl shadow-xl p-6 border border-gray-200">
-              <h2 className="text-2xl font-bold text-black mb-6">
-                {t("details.shippingAddress")}
-              </h2>
-              <div className="space-y-2">
-                <p className="text-black font-semibold">
-                  {order.address.shippingAddress}
-                </p>
-                <p className="text-gray-600">
-                  {order.address.district}, {order.address.city}
-                </p>
-              </div>
-            </div>
-
-            {/* Vendor Information */}
-            <div className="bg-white rounded-2xl shadow-xl p-6 border border-gray-200">
-              <h2 className="text-2xl font-bold text-black mb-6">
-                {t("details.vendorInformation")}
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <p className="text-sm text-gray-600 mb-1">
-                    {t("details.shopName")}
-                  </p>
-                  <p className="font-semibold text-black">
-                    {order.vendor.shopName}
-                  </p>
-                  {order.vendor.shopNameAr && (
-                    <p className="text-sm text-gray-600">
-                      {order.vendor.shopNameAr}
-                    </p>
-                  )}
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600 mb-1">
-                    {t("details.email")}
-                  </p>
-                  <p className="font-semibold text-black">
-                    {order.vendor.email}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600 mb-1">
-                    {t("details.phoneNumber")}
-                  </p>
-                  <p className="font-semibold text-black">
-                    {order.vendor.phone}
-                  </p>
-                </div>
-                {order.vendor.vendorCity && (
+            {/* Customer Information - Hidden for vendors */}
+            {!isVendor && (
+              <div className="bg-white rounded-2xl shadow-xl p-6 border border-gray-200">
+                <h2 className="text-2xl font-bold text-black mb-6">
+                  {t("details.customerInformation")}
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <p className="text-sm text-gray-600 mb-1">
-                      {t("details.location")}
+                      {t("details.fullName")}
                     </p>
                     <p className="font-semibold text-black">
-                      {order.vendor.vendorCity}
+                      {order.customer.fullName}
                     </p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600 mb-1">
+                      {t("details.email")}
+                    </p>
+                    <p className="font-semibold text-black">
+                      {order.customer.email}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600 mb-1">
+                      {t("details.phoneNumber")}
+                    </p>
+                    <p className="font-semibold text-black">
+                      {order.customer.phoneNumber}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Shipping Address - Hidden for vendors */}
+            {!isVendor && (
+              <div className="bg-white rounded-2xl shadow-xl p-6 border border-gray-200">
+                <h2 className="text-2xl font-bold text-black mb-6">
+                  {t("details.shippingAddress")}
+                </h2>
+                <div className="space-y-2">
+                  <p className="text-black font-semibold">
+                    {order.address.shippingAddress}
+                  </p>
+                  <p className="text-gray-600">
+                    {order.address.district}, {order.address.city}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Vendor Information - Hidden for vendors */}
+            {!isVendor && (
+              <div className="bg-white rounded-2xl shadow-xl p-6 border border-gray-200">
+                <h2 className="text-2xl font-bold text-black mb-6">
+                  {t("details.vendorInformation")}
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-sm text-gray-600 mb-1">
+                      {t("details.shopName")}
+                    </p>
+                    <p className="font-semibold text-black">
+                      {order.vendor.shopName}
+                    </p>
+                    {order.vendor.shopNameAr && (
+                      <p className="text-sm text-gray-600">
+                        {order.vendor.shopNameAr}
+                      </p>
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600 mb-1">
+                      {t("details.email")}
+                    </p>
+                    <p className="font-semibold text-black">
+                      {order.vendor.email}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600 mb-1">
+                      {t("details.phoneNumber")}
+                    </p>
+                    <p className="font-semibold text-black">
+                      {order.vendor.phone}
+                    </p>
+                  </div>
+                  {order.vendor.vendorCity && (
+                    <div>
+                      <p className="text-sm text-gray-600 mb-1">
+                        {t("details.location")}
+                      </p>
+                      <p className="font-semibold text-black">
+                        {order.vendor.vendorCity}
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Shipping Policy */}
+                {(order.vendor.shippingPolicy ||
+                  order.vendor.shippingPolicyAr) && (
+                  <div className="mt-6 pt-6 border-t border-gray-200">
+                    <p className="text-sm text-gray-600 mb-2 font-bold">
+                      {t("details.shippingPolicy")}
+                    </p>
+                    <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
+                      <p className="text-sm text-gray-700">
+                        {locale === "ar" && order.vendor.shippingPolicyAr
+                          ? order.vendor.shippingPolicyAr
+                          : order.vendor.shippingPolicy}
+                      </p>
+                    </div>
                   </div>
                 )}
               </div>
-
-              {/* Shipping Policy */}
-              {(order.vendor.shippingPolicy ||
-                order.vendor.shippingPolicyAr) && (
-                <div className="mt-6 pt-6 border-t border-gray-200">
-                  <p className="text-sm text-gray-600 mb-2 font-bold">
-                    {t("details.shippingPolicy")}
-                  </p>
-                  <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
-                    <p className="text-sm text-gray-700">
-                      {locale === "ar" && order.vendor.shippingPolicyAr
-                        ? order.vendor.shippingPolicyAr
-                        : order.vendor.shippingPolicy}
-                    </p>
-                  </div>
-                </div>
-              )}
-            </div>
+            )}
           </div>
 
           {/* Sidebar */}
@@ -441,27 +453,30 @@ export default function OrderDetailPage() {
                     {statusInfo.label}
                   </span>
                 </div>
-                <div>
-                  <div className="flex justify-between items-center mb-2">
-                    <p className="text-sm text-gray-600">
-                      {t("paymentStatus")}
-                    </p>
-                    {order.paymentStatus !== PaymentStatus.Paid &&
-                      order.paymentStatus !== PaymentStatus.Refunded && (
-                        <button
-                          onClick={() => setShowPaymentModal(true)}
-                          className="text-xs px-3 py-1 bg-green-600 hover:bg-green-700 text-white font-bold rounded transition-colors"
-                        >
-                          Update
-                        </button>
-                      )}
+                {/* Hide payment status section for vendors */}
+                {!isVendor && (
+                  <div>
+                    <div className="flex justify-between items-center mb-2">
+                      <p className="text-sm text-gray-600">
+                        {t("paymentStatus")}
+                      </p>
+                      {order.paymentStatus !== PaymentStatus.Paid &&
+                        order.paymentStatus !== PaymentStatus.Refunded && (
+                          <button
+                            onClick={() => setShowPaymentModal(true)}
+                            className="text-xs px-3 py-1 bg-green-600 hover:bg-green-700 text-white font-bold rounded transition-colors"
+                          >
+                            Update
+                          </button>
+                        )}
+                    </div>
+                    <span
+                      className={`px-4 py-2 inline-flex text-sm font-bold rounded-full ${paymentStatusInfo.colorClass}`}
+                    >
+                      {paymentStatusInfo.label}
+                    </span>
                   </div>
-                  <span
-                    className={`px-4 py-2 inline-flex text-sm font-bold rounded-full ${paymentStatusInfo.colorClass}`}
-                  >
-                    {paymentStatusInfo.label}
-                  </span>
-                </div>
+                )}
               </div>
             </div>
 
@@ -549,7 +564,8 @@ export default function OrderDetailPage() {
           />
         )}
 
-        {showPaymentModal && (
+        {/* Hide payment status modal for vendors */}
+        {!isVendor && showPaymentModal && (
           <PaymentStatusModal
             order={{
               id: order.id,

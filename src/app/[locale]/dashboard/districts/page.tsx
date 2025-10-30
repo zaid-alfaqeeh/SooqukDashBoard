@@ -29,7 +29,7 @@ export default function DistrictsPage() {
   const locale = useLocale();
   const toast = useToast();
 
-  useAuthGuard(["Admin", "vendor", "ShippingCompany"]);
+  useAuthGuard(["Admin", "Vendor", "ShippingCompany"]);
   const isAdmin = useHasRole("Admin");
 
   // State

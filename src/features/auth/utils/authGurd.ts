@@ -107,7 +107,7 @@ export const RoleGuard = ({
  */
 export const ROLES = {
   ADMIN: "Admin" as UserRole,
-  VENDOR: "vendor" as UserRole,
+  VENDOR: "Vendor" as UserRole,
   SHIPPING_COMPANY: "ShippingCompany" as UserRole,
 };
 

@@ -8,6 +8,9 @@ import type {
   CancelOrderRequest,
   UpdateOrderStatusRequest,
   UpdatePaymentStatusRequest,
+  GetVendorOrdersParams,
+  GetVendorOrdersResponse,
+  UpdateVendorOrderStatusRequest,
 } from "../types/order.types";
 
 /**
@@ -74,5 +77,39 @@ export const ordersApi = {
     data: UpdatePaymentStatusRequest
   ): Promise<void> => {
     await AxiosApi.patch(`${ENDPOINTS.ORDERS.BASE}/${id}/payment-status`, data);
+  },
+};
+
+/**
+ * Vendor Orders API
+ */
+export const vendorOrdersApi = {
+  /**
+   * Get vendor orders with pagination
+   */
+  getVendorOrders: async (
+    vendorId: number,
+    params: GetVendorOrdersParams = {}
+  ): Promise<GetVendorOrdersResponse> => {
+    const response = await AxiosApi.get<GetVendorOrdersResponse>(
+      `${ENDPOINTS.VENDOR.ORDERS}/${vendorId}/orders`,
+      { params }
+    );
+    return response.data;
+  },
+
+  /**
+   * Update vendor order status
+   * Only allows: Confirmed (2), Processing (3), Cancelled (6)
+   */
+  updateVendorOrderStatus: async (
+    vendorId: number,
+    orderId: number,
+    data: UpdateVendorOrderStatusRequest
+  ): Promise<void> => {
+    await AxiosApi.put(
+      `${ENDPOINTS.VENDOR.ORDERS}/${vendorId}/orders/${orderId}/status`,
+      data
+    );
   },
 };

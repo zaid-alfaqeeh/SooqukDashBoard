@@ -37,7 +37,7 @@ type ActiveTab = "colors" | "sizes";
 export default function ColorsSizesPage() {
   const t = useTranslations("colorsSizes");
   const toast = useToast();
-  useAuthGuard(["Admin", "vendor"]);
+  useAuthGuard(["Admin", "Vendor"]);
 
   const user = useSelector((state: RootState) => state.auth.user);
   const isAdmin = user?.roles.includes("Admin");

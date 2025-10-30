@@ -44,6 +44,12 @@ export const ENDPOINTS = {
     STATISTICS: "/api/Orders/statistics",
     ADMIN_ORDER: "/api/Orders/Admin/Order",
   },
+  VENDOR: {
+    ORDERS: "/api/vendor",
+    STATISTICS: "/api/vendor",
+    REVIEWS: "/api/ReviewsManagement/vendors",
+    PRODUCT_REVIEWS: "/api/ReviewsManagement/vendor/my-products",
+  },
   SUBCATEGORIES: {
     GET_BY_CATEGORY: "/api/CategoryApi/getSubCategories",
     CREATE: "/api/Admin/CreateSubCategory",

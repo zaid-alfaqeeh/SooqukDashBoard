@@ -24,7 +24,7 @@ export default function CategoriesPage() {
   const t = useTranslations();
   const toast = useToast();
 
-  useAuthGuard(["Admin", "vendor"]);
+  useAuthGuard(["Admin", "Vendor"]);
   const isAdmin = useHasRole("Admin");
 
   // Pagination and search

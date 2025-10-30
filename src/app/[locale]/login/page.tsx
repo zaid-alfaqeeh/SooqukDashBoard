@@ -56,8 +56,8 @@ export default function LoginPage() {
       // Success - redirect based on role
       if (result.user.roles.includes("Admin")) {
         router.push("/dashboard");
-      } else if (result.user.roles.includes("vendor")) {
-        router.push("/dashboard/vendor");
+      } else if (result.user.roles.includes("Vendor")) {
+        router.push("/dashboard/vendor-orders");
       } else if (result.user.roles.includes("ShippingCompany")) {
         router.push("/dashboard/shipping");
       } else {

@@ -9,7 +9,7 @@ import { useLocale } from "next-intl";
 export default function CitiesPage() {
   const t = useTranslations();
   const locale = useLocale();
-  useAuthGuard(["Admin", "vendor", "ShippingCompany"]);
+  useAuthGuard(["Admin", "Vendor", "ShippingCompany"]);
 
   const { data: cities, isLoading, error } = useCities();
 
