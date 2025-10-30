@@ -116,6 +116,20 @@ export const menuConfig: MenuItem[] = [
     path: "/dashboard/reviews",
     roles: ["Admin"],
   },
+  {
+    id: "faq",
+    labelKey: "menu.faq",
+    icon: "question",
+    path: "/dashboard/faq",
+    roles: ["Admin"],
+  },
+  {
+    id: "vendor-subscriptions",
+    labelKey: "menu.vendorSubscriptions",
+    icon: "subscription",
+    path: "/dashboard/vendor-subscriptions",
+    roles: ["Admin"],
+  },
 
   // Vendor Only Sections
   {

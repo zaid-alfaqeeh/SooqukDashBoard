@@ -33,6 +33,9 @@ export const ENDPOINTS = {
     USER: "/api/Admin/user",
     CREATE_USER: "/api/Admin/CreateUser",
     UPDATE_USER: "/api/Admin/UpdateUser",
+    STATISTICS: "/api/Admin/statistics",
+    COMPREHENSIVE_STATISTICS: "/api/Admin/statistics/comprehensive",
+    DASHBOARD_OVERVIEW: "/api/Admin/dashboard/overview",
   },
   CATEGORIES: {
     GET_ALL: "/api/CategoryApi/getAllCategory",
@@ -115,5 +118,17 @@ export const ENDPOINTS = {
     UPDATE_VENDOR_STATUS: "/api/ReviewsManagement/admin/vendors",
     DELETE_PRODUCT: "/api/ReviewsManagement/admin/products",
     DELETE_VENDOR: "/api/ReviewsManagement/admin/vendors",
+  },
+  FAQ: {
+    GET_ALL: "/api/Admin/getAllFAQs",
+    ADD: "/api/Admin/addFAQ",
+    UPDATE: "/api/Admin/updateFAQ",
+    DELETE: "/api/Admin/deleteFAQ",
+  },
+  VENDOR_SUBSCRIPTIONS: {
+    GET_ALL: "/api/Admin/GetAllVendorSubscriptions",
+    CREATE: "/api/Admin/CreateVendorSubscription",
+    UPDATE: "/api/Admin/UpdateVendorSubscription",
+    DELETE: "/api/Admin/DeleteVendorSubscription",
   },
 } as const;
