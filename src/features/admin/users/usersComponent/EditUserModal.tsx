@@ -176,45 +176,45 @@ export default function EditUserModal({
       phoneNumber: data.phoneNumber,
       isActive: data.isActive,
       status: data.status,
-      address: data.address || null,
       cityId: data.cityId,
-      districtId: data.districtId || null,
     };
 
-    // Add role-specific fields
+    // Add conditional common fields
+    if (data.address) {
+      baseData.address = data.address;
+    }
+    if (data.districtId) {
+      baseData.districtId = data.districtId;
+    }
+
+    // Add only role-specific fields
     if (user.role === "Admin" || user.role === "Super Admin") {
-      onSubmit({
-        ...baseData,
-        department: data.department || "",
-        jobTitle: data.jobTitle || "",
-      });
+      baseData.department = data.department;
+      baseData.jobTitle = data.jobTitle;
+      onSubmit(baseData);
     } else if (user.role === "Vendor") {
-      onSubmit({
-        ...baseData,
-        vendorId: user.vendorDetails?.id,
-        shopName: data.shopName || "",
-        shopNameAr: data.shopNameAr || "",
-        logo: data.logo || "",
-        description: data.description || "",
-        returnPolicy: data.returnPolicy || "",
-        shippingPolicy: data.vendorShippingPolicy || "",
-        shippingPolicyAr: data.vendorShippingPolicyAr || "",
-        vendorCityId: data.cityId,
-        vendorDistrictId: data.vendorDistrictId || 0,
-        vendorContactEmail: data.vendorContactEmail || "",
-        vendorContactPhone: data.vendorContactPhone || "",
-        vendorAddress: data.vendorAddress || "",
-        vendorStatus: data.vendorStatus || 0,
-      });
+      baseData.vendorId = user.vendorDetails?.id;
+      if (data.shopName) baseData.shopName = data.shopName;
+      if (data.shopNameAr) baseData.shopNameAr = data.shopNameAr;
+      if (data.logo) baseData.logo = data.logo;
+      if (data.description) baseData.description = data.description;
+      if (data.returnPolicy) baseData.returnPolicy = data.returnPolicy;
+      if (data.vendorShippingPolicy) baseData.shippingPolicy = data.vendorShippingPolicy;
+      if (data.vendorShippingPolicyAr) baseData.shippingPolicyAr = data.vendorShippingPolicyAr;
+      baseData.vendorCityId = data.cityId;
+      if (data.vendorDistrictId) baseData.vendorDistrictId = data.vendorDistrictId;
+      if (data.vendorContactEmail) baseData.vendorContactEmail = data.vendorContactEmail;
+      if (data.vendorContactPhone) baseData.vendorContactPhone = data.vendorContactPhone;
+      if (data.vendorAddress) baseData.vendorAddress = data.vendorAddress;
+      if (data.vendorStatus !== undefined) baseData.vendorStatus = data.vendorStatus;
+      onSubmit(baseData);
     } else if (user.role === "ShippingCompany") {
-      onSubmit({
-        ...baseData,
-        shippingCompanyId: user.shippingCompanyDetails?.id,
-        companyName: data.companyName || "",
-        companyDescription: data.companyDescription || "",
-        companyContactEmail: data.companyContactEmail || "",
-        companyPhoneNumber: data.companyPhoneNumber || "",
-      });
+      baseData.shippingCompanyId = user.shippingCompanyDetails?.id;
+      if (data.companyName) baseData.companyName = data.companyName;
+      if (data.companyDescription) baseData.companyDescription = data.companyDescription;
+      if (data.companyContactEmail) baseData.companyContactEmail = data.companyContactEmail;
+      if (data.companyPhoneNumber) baseData.companyPhoneNumber = data.companyPhoneNumber;
+      onSubmit(baseData);
     } else {
       onSubmit(baseData);
     }

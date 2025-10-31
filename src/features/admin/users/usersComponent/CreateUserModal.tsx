@@ -42,8 +42,12 @@ export default function CreateUserModal({
   const [shopName, setShopName] = useState("");
   const [shopNameAr, setShopNameAr] = useState("");
   const [logo, setLogo] = useState("");
+  const [logoFile, setLogoFile] = useState<File | null>(null);
   const [description, setDescription] = useState("");
   const [returnPolicy, setReturnPolicy] = useState("");
+  const [returnPolicyAr, setReturnPolicyAr] = useState("");
+  const [shippingPolicy, setShippingPolicy] = useState("");
+  const [shippingPolicyAr, setShippingPolicyAr] = useState("");
   const [vendorDistrictId, setVendorDistrictId] = useState<number>(0);
   const [vendorContactEmail, setVendorContactEmail] = useState("");
   const [vendorContactPhone, setVendorContactPhone] = useState("");
@@ -54,8 +58,6 @@ export default function CreateUserModal({
   const [companyDescription, setCompanyDescription] = useState("");
   const [companyContactEmail, setCompanyContactEmail] = useState("");
   const [companyPhoneNumber, setCompanyPhoneNumber] = useState("");
-  const [shippingPolicy, setShippingPolicy] = useState("");
-  const [shippingPolicyAr, setShippingPolicyAr] = useState("");
 
   const { data: cities } = useCities();
   const { data: districts } = useDistrictsByCityId(cityId || null);
@@ -77,7 +79,8 @@ export default function CreateUserModal({
         selectedRole: "Admin",
         department,
         jobTitle,
-      });
+        logoFile: undefined,
+      } as any);
     } else if (selectedRole === "Vendor") {
       onSubmit({
         fullName,
@@ -94,11 +97,15 @@ export default function CreateUserModal({
         logo,
         description,
         returnPolicy,
+        returnPolicyAr,
+        shippingPolicy,
+        shippingPolicyAr,
         vendorDistrictId,
         vendorContactEmail,
         vendorContactPhone,
         vendorAddress,
-      });
+        logoFile: logoFile || undefined,
+      } as any);
     } else if (selectedRole === "ShippingCompany") {
       onSubmit({
         fullName,
@@ -114,7 +121,8 @@ export default function CreateUserModal({
         companyDescription,
         companyContactEmail,
         companyPhoneNumber,
-      });
+        logoFile: undefined,
+      } as any);
     }
   };
 
@@ -426,11 +434,22 @@ export default function CreateUserModal({
                     {t("logo")}
                   </label>
                   <input
-                    type="url"
-                    value={logo}
-                    onChange={(e) => setLogo(e.target.value)}
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-black focus:border-[#E6497F] outline-none"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        setLogoFile(file);
+                        setLogo(""); // Clear URL if file is selected
+                      }
+                    }}
+                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-black focus:border-[#E6497F] outline-none file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#E6497F] file:text-white hover:file:bg-[#d63d6f]"
                   />
+                  {logoFile && (
+                    <p className="mt-2 text-sm text-gray-600">
+                      {t("selectedFile")}: {logoFile.name}
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -467,6 +486,46 @@ export default function CreateUserModal({
                   value={returnPolicy}
                   onChange={(e) => setReturnPolicy(e.target.value)}
                   rows={3}
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-black focus:border-[#E6497F] outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold text-black mb-2">
+                  {t("returnPolicyAr")}
+                </label>
+                <textarea
+                  value={returnPolicyAr}
+                  onChange={(e) => setReturnPolicyAr(e.target.value)}
+                  rows={3}
+                  dir="rtl"
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-black focus:border-[#E6497F] outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold text-black mb-2">
+                  {t("shippingPolicy")} *
+                </label>
+                <textarea
+                  value={shippingPolicy}
+                  onChange={(e) => setShippingPolicy(e.target.value)}
+                  rows={3}
+                  required
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-black focus:border-[#E6497F] outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold text-black mb-2">
+                  {t("shippingPolicyAr")} *
+                </label>
+                <textarea
+                  value={shippingPolicyAr}
+                  onChange={(e) => setShippingPolicyAr(e.target.value)}
+                  rows={3}
+                  dir="rtl"
+                  required
                   className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-black focus:border-[#E6497F] outline-none"
                 />
               </div>

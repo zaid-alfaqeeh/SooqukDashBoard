@@ -120,13 +120,17 @@ export interface CreateVendorRequest {
   address: string;
   shopName: string;
   shopNameAr: string;
-  logo: string;
-  description: string;
-  returnPolicy: string;
+  logo?: string;
+  description?: string;
+  returnPolicy?: string;
+  returnPolicyAr?: string;
+  shippingPolicy?: string;
+  shippingPolicyAr?: string;
   vendorDistrictId: number;
   vendorContactEmail: string;
   vendorContactPhone: string;
   vendorAddress: string;
+  logoFile?: File;
 }
 
 export interface CreateShippingCompanyRequest {
@@ -171,6 +175,7 @@ export interface UpdateUserRequest {
   logo?: string;
   description?: string;
   returnPolicy?: string;
+  returnPolicyAr?: string;
   shippingPolicy?: string;
   shippingPolicyAr?: string;
   vendorCityId?: number;
