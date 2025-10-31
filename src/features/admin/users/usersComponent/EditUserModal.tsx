@@ -38,6 +38,7 @@ export default function EditUserModal({
   const validationSchema = getValidationSchema(user.role);
 
   // Initialize form with React Hook Form
+  // Use empty defaults initially - will be populated by useEffect reset
   const {
     register,
     handleSubmit,
@@ -48,41 +49,43 @@ export default function EditUserModal({
   } = useForm<EditUserFormData>({
     resolver: zodResolver(validationSchema),
     defaultValues: {
-      fullName: user.fullName,
-      email: user.email,
-      phoneNumber: user.phoneNumber,
-      isActive: user.isActive,
-      status: user.status,
-      cityId: user.cityId || 0,
-      districtId: user.districtId || undefined,
-      address: user.address || undefined,
-      // Admin fields
-      department: user.adminDetails?.department || undefined,
-      jobTitle: user.adminDetails?.jobTitle || undefined,
-      // Vendor fields
-      shopName: user.vendorDetails?.shopName || undefined,
-      shopNameAr: user.vendorDetails?.shopNameAr || undefined,
-      logo: user.vendorDetails?.logo || undefined,
-      description: user.vendorDetails?.description || undefined,
-      returnPolicy: user.vendorDetails?.returnPolicy || undefined,
-      vendorShippingPolicy: user.vendorDetails?.shippingPolicy || undefined,
-      vendorShippingPolicyAr: user.vendorDetails?.shippingPolicyAr || undefined,
-      vendorDistrictId: user.vendorDetails?.districtId || 0,
-      vendorContactEmail: user.vendorDetails?.contactEmail || undefined,
-      vendorContactPhone: user.vendorDetails?.contactPhone || undefined,
-      vendorAddress: user.vendorDetails?.address || undefined,
-      vendorStatus: user.vendorDetails?.status || 0,
-      // Shipping Company fields
-      companyName: user.shippingCompanyDetails?.name || undefined,
-      companyDescription: user.shippingCompanyDetails?.description || undefined,
-      companyContactEmail:
-        user.shippingCompanyDetails?.contactEmail || undefined,
-      companyPhoneNumber: user.shippingCompanyDetails?.phoneNumber || undefined,
+      fullName: "",
+      email: "",
+      phoneNumber: "",
+      isActive: false,
+      status: 0,
+      cityId: 0,
+      districtId: undefined,
+      address: undefined,
+      department: undefined,
+      jobTitle: undefined,
+      shopName: undefined,
+      shopNameAr: undefined,
+      logo: undefined,
+      description: undefined,
+      returnPolicy: undefined,
+      vendorShippingPolicy: undefined,
+      vendorShippingPolicyAr: undefined,
+      vendorDistrictId: 0,
+      vendorContactEmail: undefined,
+      vendorContactPhone: undefined,
+      vendorAddress: undefined,
+      vendorStatus: 0,
+      companyName: undefined,
+      companyDescription: undefined,
+      companyContactEmail: undefined,
+      companyPhoneNumber: undefined,
     },
   });
 
+  console.log("🟠 Form initialized with empty defaults");
+
   // Watch cityId to reset districtId when city changes
   const cityId = watch("cityId");
+
+  // Watch fullName to ensure it's available for the input
+  const watchedFullName = watch("fullName");
+  console.log("🔵 Current watchedFullName:", watchedFullName);
 
   // Fetch data
   const { data: cities, isLoading: citiesLoading } = useCities();
@@ -92,44 +95,144 @@ export default function EditUserModal({
 
   // Reset form when user prop changes
   useEffect(() => {
-    reset({
-      fullName: user.fullName,
-      email: user.email,
-      phoneNumber: user.phoneNumber,
-      isActive: user.isActive,
-      status: user.status,
-      cityId: user.cityId || 0,
-      districtId: user.districtId || undefined,
-      address: user.address || undefined,
-      department: user.adminDetails?.department || undefined,
-      jobTitle: user.adminDetails?.jobTitle || undefined,
-      shopName: user.vendorDetails?.shopName || undefined,
-      shopNameAr: user.vendorDetails?.shopNameAr || undefined,
-      logo: user.vendorDetails?.logo || undefined,
-      description: user.vendorDetails?.description || undefined,
-      returnPolicy: user.vendorDetails?.returnPolicy || undefined,
-      vendorShippingPolicy: user.vendorDetails?.shippingPolicy || undefined,
-      vendorShippingPolicyAr: user.vendorDetails?.shippingPolicyAr || undefined,
-      vendorDistrictId: user.vendorDetails?.districtId || 0,
-      vendorContactEmail: user.vendorDetails?.contactEmail || undefined,
-      vendorContactPhone: user.vendorDetails?.contactPhone || undefined,
-      vendorAddress: user.vendorDetails?.address || undefined,
-      vendorStatus: user.vendorDetails?.status || 0,
-      companyName: user.shippingCompanyDetails?.name || undefined,
-      companyDescription: user.shippingCompanyDetails?.description || undefined,
-      companyContactEmail:
-        user.shippingCompanyDetails?.contactEmail || undefined,
-      companyPhoneNumber: user.shippingCompanyDetails?.phoneNumber || undefined,
-    });
-  }, [user.id, reset, user]);
+    console.log("🟢 useEffect - Reset form triggered");
+    console.log("🟢 user exists:", !!user);
+    console.log("🟢 user.id exists:", !!user?.id);
 
-  // Reset districtId when cityId changes
-  useEffect(() => {
-    setValue("districtId", undefined);
-    if (user.role === "Vendor") {
-      setValue("vendorDistrictId", 0);
+    if (!user || !user.id) {
+      console.log("🟢 useEffect - Early return: no user or user.id");
+      return;
     }
-  }, [cityId, setValue, user.role]);
+
+    console.log("🟢 useEffect - Building defaultValues");
+    console.log("🟢 user.fullName:", user.fullName);
+    console.log("🟢 user.fullName ?? '':", user.fullName ?? "");
+    console.log("🟢 user.fullName || '':", user.fullName || "");
+
+    const defaultValues: EditUserFormData = {
+      fullName: user.fullName || "",
+      email: user.email || "",
+      phoneNumber: user.phoneNumber || "",
+      isActive: user.isActive ?? false,
+      status: user.status ?? 0,
+      cityId: user.cityId ?? 0,
+      districtId: user.districtId ?? undefined,
+      address: user.address ?? undefined,
+      // Admin fields
+      department: user.adminDetails?.department ?? undefined,
+      jobTitle: user.adminDetails?.jobTitle ?? undefined,
+      // Vendor fields
+      shopName: user.vendorDetails?.shopName ?? undefined,
+      shopNameAr: user.vendorDetails?.shopNameAr ?? undefined,
+      logo: user.vendorDetails?.logo ?? undefined,
+      description: user.vendorDetails?.description ?? undefined,
+      returnPolicy: user.vendorDetails?.returnPolicy ?? undefined,
+      vendorShippingPolicy: user.vendorDetails?.shippingPolicy ?? undefined,
+      vendorShippingPolicyAr: user.vendorDetails?.shippingPolicyAr ?? undefined,
+      vendorDistrictId: user.vendorDetails?.districtId ?? 0,
+      vendorContactEmail: user.vendorDetails?.contactEmail ?? undefined,
+      vendorContactPhone: user.vendorDetails?.contactPhone ?? undefined,
+      vendorAddress: user.vendorDetails?.address ?? undefined,
+      vendorStatus: user.vendorDetails?.status ?? 0,
+      // Shipping Company fields
+      companyName: user.shippingCompanyDetails?.name ?? undefined,
+      companyDescription: user.shippingCompanyDetails?.description ?? undefined,
+      companyContactEmail:
+        user.shippingCompanyDetails?.contactEmail ?? undefined,
+      companyPhoneNumber: user.shippingCompanyDetails?.phoneNumber ?? undefined,
+    };
+
+    console.log("🟢 defaultValues.fullName:", defaultValues.fullName);
+    console.log("🟢 Calling reset()...");
+
+    reset(defaultValues, { keepDefaultValues: false });
+
+    // Force React to update by using a small delay and then setValue
+    setTimeout(() => {
+      // Explicitly set fullName value to ensure input is updated
+      console.log("🟢 Explicitly setting fullName with setValue...");
+      setValue("fullName", defaultValues.fullName, {
+        shouldValidate: false,
+        shouldDirty: false,
+        shouldTouch: false,
+      });
+
+      // Explicitly set districtId value to ensure select is updated
+      if (defaultValues.districtId !== undefined) {
+        console.log(
+          "🟢 Explicitly setting districtId with setValue...",
+          defaultValues.districtId
+        );
+        setValue("districtId", defaultValues.districtId, {
+          shouldValidate: false,
+          shouldDirty: false,
+          shouldTouch: false,
+        });
+      }
+
+      // Explicitly set vendorDistrictId value for Vendor users
+      if (
+        user.role === "Vendor" &&
+        defaultValues.vendorDistrictId &&
+        defaultValues.vendorDistrictId > 0
+      ) {
+        console.log(
+          "🟢 Explicitly setting vendorDistrictId with setValue...",
+          defaultValues.vendorDistrictId
+        );
+        setValue("vendorDistrictId", defaultValues.vendorDistrictId, {
+          shouldValidate: false,
+          shouldDirty: false,
+          shouldTouch: false,
+        });
+      }
+
+      // Check form values after reset and setValue
+      setTimeout(() => {
+        const formValues = watch();
+        console.log(
+          "🟢 After reset - formValues.fullName:",
+          formValues.fullName
+        );
+        console.log("🟢 After reset - formValues:", formValues);
+
+        // Also check the actual input element value
+        const fullNameInput = document.getElementById(
+          "fullName"
+        ) as HTMLInputElement;
+        if (fullNameInput) {
+          console.log("🟢 Input element value:", fullNameInput.value);
+          console.log(
+            "🟢 Input element === formValues.fullName:",
+            fullNameInput.value === formValues.fullName
+          );
+
+          // If input is still empty, try setting it directly
+          if (!fullNameInput.value && formValues.fullName) {
+            console.log(
+              "🔴 Input is empty but form has value - setting directly"
+            );
+            fullNameInput.value = formValues.fullName;
+            // Trigger input event to notify react-hook-form
+            fullNameInput.dispatchEvent(new Event("input", { bubbles: true }));
+          }
+        }
+      }, 100);
+    }, 50);
+  }, [user, reset, setValue]);
+
+  // Reset districtId when cityId changes (but only if it actually changed to a different city)
+  useEffect(() => {
+    // Only reset districtId if cityId changed AND it's different from the user's original cityId
+    // This prevents clearing districtId during initial form setup
+    if (cityId && cityId !== user.cityId) {
+      console.log("🟡 City changed - resetting districtId");
+      setValue("districtId", undefined);
+      if (user.role === "Vendor") {
+        setValue("vendorDistrictId", 0);
+      }
+    }
+  }, [cityId, setValue, user.role, user.cityId]);
 
   // Focus management
   useEffect(() => {
@@ -199,21 +302,30 @@ export default function EditUserModal({
       if (data.logo) baseData.logo = data.logo;
       if (data.description) baseData.description = data.description;
       if (data.returnPolicy) baseData.returnPolicy = data.returnPolicy;
-      if (data.vendorShippingPolicy) baseData.shippingPolicy = data.vendorShippingPolicy;
-      if (data.vendorShippingPolicyAr) baseData.shippingPolicyAr = data.vendorShippingPolicyAr;
+      if (data.vendorShippingPolicy)
+        baseData.shippingPolicy = data.vendorShippingPolicy;
+      if (data.vendorShippingPolicyAr)
+        baseData.shippingPolicyAr = data.vendorShippingPolicyAr;
       baseData.vendorCityId = data.cityId;
-      if (data.vendorDistrictId) baseData.vendorDistrictId = data.vendorDistrictId;
-      if (data.vendorContactEmail) baseData.vendorContactEmail = data.vendorContactEmail;
-      if (data.vendorContactPhone) baseData.vendorContactPhone = data.vendorContactPhone;
+      if (data.vendorDistrictId)
+        baseData.vendorDistrictId = data.vendorDistrictId;
+      if (data.vendorContactEmail)
+        baseData.vendorContactEmail = data.vendorContactEmail;
+      if (data.vendorContactPhone)
+        baseData.vendorContactPhone = data.vendorContactPhone;
       if (data.vendorAddress) baseData.vendorAddress = data.vendorAddress;
-      if (data.vendorStatus !== undefined) baseData.vendorStatus = data.vendorStatus;
+      if (data.vendorStatus !== undefined)
+        baseData.vendorStatus = data.vendorStatus;
       onSubmit(baseData);
     } else if (user.role === "ShippingCompany") {
       baseData.shippingCompanyId = user.shippingCompanyDetails?.id;
       if (data.companyName) baseData.companyName = data.companyName;
-      if (data.companyDescription) baseData.companyDescription = data.companyDescription;
-      if (data.companyContactEmail) baseData.companyContactEmail = data.companyContactEmail;
-      if (data.companyPhoneNumber) baseData.companyPhoneNumber = data.companyPhoneNumber;
+      if (data.companyDescription)
+        baseData.companyDescription = data.companyDescription;
+      if (data.companyContactEmail)
+        baseData.companyContactEmail = data.companyContactEmail;
+      if (data.companyPhoneNumber)
+        baseData.companyPhoneNumber = data.companyPhoneNumber;
       onSubmit(baseData);
     } else {
       onSubmit(baseData);
@@ -258,6 +370,7 @@ export default function EditUserModal({
               {...register("fullName")}
               ref={firstInputRef}
               id="fullName"
+              key={`fullName-${user.id}`}
               label={t("fullName")}
               error={errors.fullName?.message}
               isRequired
@@ -305,6 +418,7 @@ export default function EditUserModal({
               <FormSelect
                 {...register("districtId", { valueAsNumber: true })}
                 id="districtId"
+                key={`districtId-${user.id}`}
                 label={t("district")}
                 error={errors.districtId?.message}
                 isRequired={user.role !== "Customer"}
@@ -434,6 +548,7 @@ export default function EditUserModal({
                 <FormSelect
                   {...register("vendorDistrictId", { valueAsNumber: true })}
                   id="vendorDistrictId"
+                  key={`vendorDistrictId-${user.id}`}
                   label={t("vendorDistrict")}
                   error={errors.vendorDistrictId?.message}
                   isRequired
