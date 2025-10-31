@@ -143,4 +143,7 @@ export const ENDPOINTS = {
     MARK_REVIEWED: "/api/ErrorLogs/mark-reviewed",
     CLEANUP: "/api/ErrorLogs/cleanup-by-type",
   },
+  NOTIFICATIONS: {
+    SEND_TO_ROLE: "/api/Notifications/send-to-role",
+  },
 } as const;

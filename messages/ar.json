@@ -57,6 +57,7 @@
     "reports": "التقارير",
     "support": "الدعم الفني",
     "errorLogs": "سجل الأخطاء",
+    "notifications": "الإشعارات",
     "settings": "الإعدادات",
     "subscriptions": "الاشتراكات"
   },
@@ -1334,5 +1335,27 @@
     "errors": {
       "loadingFailed": "فشل في تحميل سجلات الأخطاء"
     }
+  },
+  "notifications": {
+    "title": "إرسال الإشعارات",
+    "subtitle": "إرسال الإشعارات للمستخدمين حسب دورهم",
+    "sendNotification": "إرسال إشعار",
+    "role": "الدور",
+    "notificationTitle": "العنوان",
+    "titleAr": "العنوان (عربي)",
+    "message": "الرسالة",
+    "messageAr": "الرسالة (عربي)",
+    "icon": "الأيقونة",
+    "send": "إرسال",
+    "sending": "جاري الإرسال...",
+    "notificationSent": "تم إرسال الإشعار بنجاح",
+    "titlePlaceholder": "أدخل عنوان الإشعار",
+    "titleArPlaceholder": "أدخل عنوان الإشعار",
+    "messagePlaceholder": "أدخل رسالة الإشعار",
+    "messageArPlaceholder": "أدخل رسالة الإشعار",
+    "iconPlaceholder": "أدخل اسم الأيقونة أو الرابط (اختياري)",
+    "iconHint": "يمكنك استخدام أسماء الأيقونات مثل 'bell' أو 'info' أو 'warning' أو توفير رابط أيقونة",
+    "infoTitle": "كيفية إرسال الإشعارات",
+    "infoDescription": "اختر دور المستخدم واكتب إشعارك. سيحصل جميع المستخدمين بالدور المحدد على هذا الإشعار."
   }
 }

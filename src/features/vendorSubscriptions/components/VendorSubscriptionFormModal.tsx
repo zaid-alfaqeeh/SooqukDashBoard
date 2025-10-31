@@ -7,6 +7,7 @@ import type {
   CreateVendorSubscriptionRequest,
 } from "../types/vendorSubscription.types";
 import { useSubscriptionPlans } from "@/features/subscriptions/hooks/useSubscriptions";
+import { useUsers } from "@/features/admin/users/usersHooks/useUsers";
 
 interface VendorSubscriptionFormModalProps {
   isOpen: boolean;
@@ -26,6 +27,15 @@ export default function VendorSubscriptionFormModal({
   const t = useTranslations("vendorSubscriptions");
   const { data: subscriptionPlans, isLoading: isLoadingPlans } =
     useSubscriptionPlans();
+
+  // Fetch all vendors for the dropdown
+  const { data: vendorsResponse, isLoading: isLoadingVendors } = useUsers({
+    role: "Vendor",
+    pageNumber: 1,
+    pageSize: 1000, // Fetch all vendors
+  });
+
+  const vendors = vendorsResponse?.items || [];
 
   const [formData, setFormData] = useState<CreateVendorSubscriptionRequest>({
     vendorId: 0,
@@ -128,17 +138,38 @@ export default function VendorSubscriptionFormModal({
                 readOnly
               />
             ) : (
-              <input
-                type="number"
+              <select
                 value={formData.vendorId || ""}
-                onChange={(e) =>
-                  setFormData({ ...formData, vendorId: Number(e.target.value) })
-                }
-                placeholder={t("enterVendorId")}
+                onChange={(e) => {
+                  const vendorId = parseInt(e.target.value, 10);
+                  if (!isNaN(vendorId)) {
+                    setFormData({ ...formData, vendorId });
+                  }
+                }}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-black font-medium"
                 required
-                min="1"
-              />
+                disabled={isLoadingVendors}
+              >
+                <option value="">
+                  {isLoadingVendors ? t("loading") : t("selectVendor")}
+                </option>
+                {vendors.map((vendor) => {
+                  // Use VendorDetails.id if available (number), otherwise try to parse User.id
+                  const vendorId = vendor.vendorDetails?.id
+                    ? vendor.vendorDetails.id
+                    : parseInt(vendor.id, 10);
+
+                  // Only include vendor if we have a valid numeric ID
+                  if (isNaN(vendorId)) return null;
+
+                  return (
+                    <option key={vendor.id} value={vendorId}>
+                      {vendor.fullName}{" "}
+                      {vendor.email ? `(${vendor.email})` : ""}
+                    </option>
+                  );
+                })}
+              </select>
             )}
           </div>
           {/* Subscription Plan */}

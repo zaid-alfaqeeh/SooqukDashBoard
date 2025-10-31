@@ -57,6 +57,7 @@
     "reports": "Reports",
     "support": "Support",
     "errorLogs": "Error Logs",
+    "notifications": "Notifications",
     "settings": "Settings",
     "subscriptions": "Subscriptions"
   },
@@ -1333,5 +1334,27 @@
     "errors": {
       "loadingFailed": "Failed to load error logs"
     }
+  },
+  "notifications": {
+    "title": "Send Notifications",
+    "subtitle": "Send notifications to users based on their role",
+    "sendNotification": "Send Notification",
+    "role": "Role",
+    "notificationTitle": "Title",
+    "titleAr": "Title (Arabic)",
+    "message": "Message",
+    "messageAr": "Message (Arabic)",
+    "icon": "Icon",
+    "send": "Send",
+    "sending": "Sending...",
+    "notificationSent": "Notification sent successfully",
+    "titlePlaceholder": "Enter notification title",
+    "titleArPlaceholder": "أدخل عنوان الإشعار",
+    "messagePlaceholder": "Enter notification message",
+    "messageArPlaceholder": "أدخل رسالة الإشعار",
+    "iconPlaceholder": "Enter icon name or URL (optional)",
+    "iconHint": "You can use icon names like 'bell', 'info', 'warning' or provide an icon URL",
+    "infoTitle": "How to send notifications",
+    "infoDescription": "Select a user role and compose your notification. All users with the selected role will receive this notification."
   }
 }
