@@ -6,10 +6,7 @@ import type {
   VendorSubscription,
   CreateVendorSubscriptionRequest,
 } from "../types/vendorSubscription.types";
-import {
-  useSubscriptionPlans,
-  useSubscriptionPlan,
-} from "@/features/subscriptions/hooks/useSubscriptions";
+import { useSubscriptionPlans } from "@/features/subscriptions/hooks/useSubscriptions";
 
 interface VendorSubscriptionFormModalProps {
   isOpen: boolean;
@@ -40,9 +37,9 @@ export default function VendorSubscriptionFormModal({
     endDate: "",
   });
 
-  // Fetch selected subscription plan details
-  const { data: selectedPlanData } = useSubscriptionPlan(
-    formData.subscriptionPlanId
+  // Find selected subscription plan from the list instead of making a separate API call
+  const selectedPlanData = subscriptionPlans?.find(
+    (plan) => plan.id === formData.subscriptionPlanId
   );
 
   useEffect(() => {
@@ -50,11 +47,13 @@ export default function VendorSubscriptionFormModal({
       setFormData({
         vendorId: subscription.vendorId,
         subscriptionPlanId: subscription.subscriptionPlanId,
-        planName: subscription.planName,
-        planNameAr: subscription.planNameAr,
+        planName: subscription.planName || "",
+        planNameAr: subscription.planNameAr || "",
         price: subscription.price,
-        startDate: subscription.startDate.split("T")[0],
-        endDate: subscription.endDate.split("T")[0],
+        startDate: subscription.startDate
+          ? subscription.startDate.split("T")[0]
+          : "",
+        endDate: subscription.endDate ? subscription.endDate.split("T")[0] : "",
       });
     } else {
       const today = new Date().toISOString().split("T")[0];

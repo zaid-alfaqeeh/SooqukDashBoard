@@ -21,16 +21,6 @@ export const subscriptionsApi = {
   },
 
   /**
-   * Get subscription plan by ID
-   */
-  getById: async (id: number): Promise<SubscriptionPlan> => {
-    const response = await AxiosApi.get<SubscriptionPlan>(
-      `${ENDPOINTS.SUBSCRIPTIONS.PLANS}/${id}`
-    );
-    return response.data;
-  },
-
-  /**
    * Create a new subscription plan (Admin only)
    */
   create: async (

@@ -29,18 +29,6 @@ export const useSubscriptionPlans = () => {
 };
 
 /**
- * Hook to fetch a single subscription plan by ID
- * Uses global staleTime from ReactQueryProvider (5 minutes)
- */
-export const useSubscriptionPlan = (id: number) => {
-  return useQuery({
-    queryKey: subscriptionKeys.detail(id),
-    queryFn: () => subscriptionsApi.getById(id),
-    enabled: !!id,
-  });
-};
-
-/**
  * Hook to create a subscription plan
  */
 export const useCreateSubscriptionPlan = () => {
@@ -65,11 +53,8 @@ export const useUpdateSubscriptionPlan = () => {
   return useMutation({
     mutationFn: (data: UpdateSubscriptionPlanRequest) =>
       subscriptionsApi.update(data),
-    onSuccess: (_, variables) => {
-      // Invalidate specific plan and lists
-      queryClient.invalidateQueries({
-        queryKey: subscriptionKeys.detail(variables.id),
-      });
+    onSuccess: () => {
+      // Invalidate and refetch subscription plans queries
       queryClient.invalidateQueries({ queryKey: subscriptionKeys.all });
     },
   });

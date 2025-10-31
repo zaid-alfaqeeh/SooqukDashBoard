@@ -571,6 +571,7 @@
     "createNewUser": "+ New User",
     "createUser": "Create User",
     "editUser": "Edit User",
+    "updateUser": "Update User",
     "deleteUser": "Delete User",
     "userDetails": "User Details",
     "basicInfo": "Basic Information",

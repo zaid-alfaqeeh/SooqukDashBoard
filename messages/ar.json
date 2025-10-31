@@ -573,6 +573,7 @@
     "createNewUser": "+ مستخدم جديد",
     "createUser": "إنشاء مستخدم",
     "editUser": "تعديل المستخدم",
+    "updateUser": "تحديث المستخدم",
     "deleteUser": "حذف المستخدم",
     "userDetails": "تفاصيل المستخدم",
     "basicInfo": "المعلومات الأساسية",
