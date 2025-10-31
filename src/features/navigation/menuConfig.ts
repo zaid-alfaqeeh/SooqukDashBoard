@@ -133,6 +133,13 @@ export const menuConfig: MenuItem[] = [
 
   // Vendor Only Sections
   {
+    id: "my-subscription",
+    labelKey: "menu.mySubscription",
+    icon: "subscription",
+    path: "/dashboard/my-subscription",
+    roles: ["Vendor", "Admin"], // in production this should be only Vendor
+  },
+  {
     id: "vendor-statistics",
     labelKey: "menu.vendorStatistics",
     icon: "chart",
@@ -201,6 +208,13 @@ export const menuConfig: MenuItem[] = [
     labelKey: "menu.support",
     icon: "support",
     path: "/dashboard/support",
+    roles: ["Admin"],
+  },
+  {
+    id: "error-logs",
+    labelKey: "menu.errorLogs",
+    icon: "document",
+    path: "/dashboard/error-logs",
     roles: ["Admin"],
   },
 

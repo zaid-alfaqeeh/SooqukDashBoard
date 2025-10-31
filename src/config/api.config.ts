@@ -131,4 +131,16 @@ export const ENDPOINTS = {
     UPDATE: "/api/Admin/UpdateVendorSubscription",
     DELETE: "/api/Admin/DeleteVendorSubscription",
   },
+  MY_SUBSCRIPTION: {
+    CURRENT: "/api/my-current-subscription",
+    HISTORY: "/api/my-subscription-history",
+  },
+  ERROR_LOGS: {
+    BASE: "/api/ErrorLogs",
+    STATISTICS: "/api/ErrorLogs/statistics",
+    TYPES: "/api/ErrorLogs/types",
+    SEVERITIES: "/api/ErrorLogs/severities",
+    MARK_REVIEWED: "/api/ErrorLogs/mark-reviewed",
+    CLEANUP: "/api/ErrorLogs/cleanup-by-type",
+  },
 } as const;

@@ -142,7 +142,6 @@ export default function VendorSubscriptionFormModal({
               />
             )}
           </div>
-
           {/* Subscription Plan */}
           <div>
             <label className="block text-sm font-bold text-gray-700 mb-2">
@@ -163,7 +162,6 @@ export default function VendorSubscriptionFormModal({
               ))}
             </select>
           </div>
-``
           {/* Selected Plan Details (auto-filled) */}
           {selectedPlanData && (
             <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
@@ -191,7 +189,6 @@ export default function VendorSubscriptionFormModal({
               </div>
             </div>
           )}
-
           {/* Start Date */}
           <div>
             <label className="block text-sm font-bold text-gray-700 mb-2">
@@ -207,7 +204,6 @@ export default function VendorSubscriptionFormModal({
               required
             />
           </div>
-
           {/* End Date */}
           <div>
             <label className="block text-sm font-bold text-gray-700 mb-2">
@@ -224,7 +220,6 @@ export default function VendorSubscriptionFormModal({
               min={formData.startDate}
             />
           </div>
-
           {/* Action Buttons */}
           <div className="flex gap-3 pt-4">
             <button
