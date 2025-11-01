@@ -224,6 +224,13 @@ export const menuConfig: MenuItem[] = [
     path: "/dashboard/notifications",
     roles: ["Admin"],
   },
+  {
+    id: "emails",
+    labelKey: "menu.emails",
+    icon: "mail",
+    path: "/dashboard/emails",
+    roles: ["Admin"],
+  },
 
   // Settings - All roles
   {
@@ -284,6 +291,7 @@ export const getIconPath = (iconName: string): string => {
     bell: "M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9",
     question:
       "M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
+    mail: "M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z",
   };
 
   return icons[iconName] || icons.dashboard;

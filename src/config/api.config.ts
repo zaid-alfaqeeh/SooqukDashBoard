@@ -146,4 +146,7 @@ export const ENDPOINTS = {
   NOTIFICATIONS: {
     SEND_TO_ROLE: "/api/Notifications/send-to-role",
   },
+  EMAIL: {
+    SEND_TO_SEGMENT: "/api/Email/send-to-segment",
+  },
 } as const;
