@@ -31,14 +31,6 @@ export default function SendEmailModal({
   const t = useTranslations("email");
   const tCommon = useTranslations("common");
 
-  // Fetch cities and users for dropdowns
-  const { data: cities, isLoading: isLoadingCities } = useCities();
-  const { data: usersResponse, isLoading: isLoadingUsers } = useUsers({
-    pageNumber: 1,
-    pageSize: 1000, // Fetch all users
-  });
-  const users = usersResponse?.items || [];
-
   // Form state
   const [formData, setFormData] = useState<SendEmailToSegmentRequest>({
     Subject: "",
@@ -50,6 +42,16 @@ export default function SendEmailModal({
   const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
   const [selectedRoles, setSelectedRoles] = useState<UserRole[]>([]);
   const [attachments, setAttachments] = useState<File[]>([]);
+  const [userSearchTerm, setUserSearchTerm] = useState<string>("");
+
+  // Fetch cities and users for dropdowns
+  const { data: cities, isLoading: isLoadingCities } = useCities();
+  const { data: usersResponse, isLoading: isLoadingUsers } = useUsers({
+    pageNumber: 1,
+    pageSize: 100, // Fetch all users
+    searchTerm: userSearchTerm,
+  });
+  const users = usersResponse?.items || [];
 
   // Active sections
   const [activeSections, setActiveSections] = useState({
@@ -69,6 +71,7 @@ export default function SendEmailModal({
       setSelectedUserIds([]);
       setSelectedRoles([]);
       setAttachments([]);
+      setUserSearchTerm("");
       setActiveSections({
         basic: true,
         filtering: false,
@@ -312,6 +315,16 @@ export default function SendEmailModal({
                       <label className="block text-sm font-bold text-gray-700 mb-2">
                         {t("selectUsers")} ({t("optional")})
                       </label>
+                      {/* Search Input */}
+                      <div className="mb-3">
+                        <input
+                          type="text"
+                          value={userSearchTerm}
+                          onChange={(e) => setUserSearchTerm(e.target.value)}
+                          placeholder={t("searchUsersPlaceholder")}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black font-medium text-sm"
+                        />
+                      </div>
                       <div className="border border-gray-300 rounded-lg max-h-48 overflow-y-auto p-2">
                         {isLoadingUsers ? (
                           <p className="text-sm text-gray-500 py-2">

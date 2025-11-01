@@ -1378,6 +1378,7 @@
     "userFiltering": "User Filtering",
     "optional": "Optional",
     "selectUsers": "Select Users",
+    "searchUsersPlaceholder": "Search users by name or email...",
     "selectRoles": "Select Roles",
     "loadingUsers": "Loading users...",
     "noUsers": "No users found",
